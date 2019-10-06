@@ -148,4 +148,4 @@ RUN cp -r $GOPATH/src/github.com/yunabe/lgo/examples ${HOME}/examples
 # 1. Do not use ENTRYPOINT because mybinder need to run a custom command.
 # 2. To use JupyterLab, replace "notebook" with "lab".
 # 3. Set --allow-root in case you want to run jupyter as root.
-CMD ["jupyter", "notebook", "--ip=0.0.0.0"]
+CMD ["jupyter", "notebook", "--ip=0.0.0.0" , "--NotebookApp.password='sha1:f7335c3fb9de:ac2bb08755692f03e9dcdc5dc000e164620605cd'"]
