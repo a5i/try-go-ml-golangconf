@@ -102,31 +102,41 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/opt/intel/openvino/deployme
 
 RUN cd $GOPATH/src/gocv.io/x/gocv && go run ./cmd/version/main.go && go install gocv.io/x/gocv
 
-RUN pip3 install mxnet-cu100mkl
+RUN pip3 install mxnet-mkl
 RUN pip3 install opencv-python-headless opencv-contrib-python-headless
 RUN pip3 install ipympl
+
+RUN go get -t -u -v github.com/sjwhitworth/golearn
+RUN cd $GOPATH/src/github.com/sjwhitworth/golearn && go get -t -u -v ./...
+
 # USER root
 
-RUN git clone https://github.com/apache/incubator-mxnet.git /mxnet
+# RUN git clone https://github.com/apache/incubator-mxnet.git /mxnet
 
-RUN cd /mxnet && git fetch --all --tags --prune && git checkout tags/1.4.1 && git submodule update --init --recursive
-ENV BUILD_OPTS "USE_CUDA=0 USE_CUDNN=0"
+# RUN cd /mxnet && git fetch --all --tags --prune && git checkout tags/1.4.1 && git submodule update --init --recursive
+# ENV BUILD_OPTS "USE_CUDA=0 USE_CUDNN=0 USE_CPP_PACKAGE=1"
 
-RUN apt-get update && apt-get install -y \
-    build-essential git libatlas-base-dev libopencv-dev python-opencv \
-    libcurl4-openssl-dev libgtest-dev cmake wget unzip \
-    && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install -y \
+#     build-essential git libatlas-base-dev libopencv-dev python-opencv \
+#     libcurl4-openssl-dev libgtest-dev cmake wget unzip \
+#     && rm -rf /var/lib/apt/lists/*
 
-RUN cd /mxnet && make -j$(nproc) $BUILD_OPTS && make install && make clean
+# RUN cd /mxnet && make -j$(nproc) $BUILD_OPTS && make install && make clean
 
 #RUN go get -u -v github.com/a5i/go-mxnet-predictor
 #RUN cd $GOPATH/src/github.com/a5i/go-mxnet-predictor	&& sed -i "/prefix=/c prefix=\/usr\/local" travis/mxnet.pc && cp travis/mxnet.pc /usr/lib/pkgconfig/ && pkg-config --libs mxnet
 
 RUN chown -R ${NB_USER}:${NB_USER} $GOPATH
+ADD openvino-postinstall.sh /tmp/openvino-postinstall.sh
+#RUN bash /tmp/openvino-postinstall.sh
+RUN pip3 install networkx test-generator
+# RUN cd /opt/intel/openvino/deployment_tools/model_optimizer && pip3 install -r requirements_mxnet.txt
 
 USER ${NB_USER}
-RUN lgo installpkg gocv.io/x/gocv
-
+RUN lgo installpkg gocv.io/x/gocv github.com/sjwhitworth/golearn
+RUN lgo installpkg github.com/sjwhitworth/golearn/base github.com/sjwhitworth/golearn/perceptron
+RUN cp -r $GOPATH/src/github.com/sjwhitworth/golearn/examples/datasets ${HOME}/datasets
+RUN cp -r $GOPATH/src/github.com/yunabe/lgo/examples ${HOME}/examples
 
 # Notes:
 # 1. Do not use ENTRYPOINT because mybinder need to run a custom command.
