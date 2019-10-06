@@ -1,0 +1,12 @@
+version: '2.3'
+
+services:
+  project:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - ./project:/home/gopher/project:rw
+      - ./data:/home/gopher/data:rw
+    ports:
+      - 80:8888
