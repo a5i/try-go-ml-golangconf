@@ -1,8 +1,12 @@
 <?xml version="1.0" ?>
 <mapping>
 	<map>
-		<framework name="activation0" out_port_id="0"/>
-		<IR id="2" name="activation0" out_port_id="1"/>
+		<framework name="fullyconnected1" out_port_id="0"/>
+		<IR id="10" name="fullyconnected1" out_port_id="3"/>
+	</map>
+	<map>
+		<framework name="softmax" out_port_id="0"/>
+		<IR id="11" name="softmax" out_port_id="1"/>
 	</map>
 	<map>
 		<framework name="data" out_port_id="0"/>
@@ -17,35 +21,31 @@
 		<IR id="6" name="pooling1" out_port_id="1"/>
 	</map>
 	<map>
-		<framework name="softmax" out_port_id="0"/>
-		<IR id="11" name="softmax" out_port_id="1"/>
-	</map>
-	<map>
-		<framework name="fullyconnected0" out_port_id="0"/>
-		<IR id="8" name="fullyconnected0" out_port_id="3"/>
-	</map>
-	<map>
 		<framework name="activation2" out_port_id="0"/>
 		<IR id="9" name="activation2" out_port_id="1"/>
 	</map>
 	<map>
-		<framework name="pooling0" out_port_id="0"/>
-		<IR id="3" name="pooling0" out_port_id="1"/>
+		<framework name="convolution1" out_port_id="0"/>
+		<IR id="4" name="convolution1" out_port_id="3"/>
 	</map>
 	<map>
-		<framework name="fullyconnected1" out_port_id="0"/>
-		<IR id="10" name="fullyconnected1" out_port_id="3"/>
-	</map>
-	<map>
-		<framework name="flatten0" out_port_id="0"/>
-		<IR id="7" name="flatten0" out_port_id="1"/>
+		<framework name="activation0" out_port_id="0"/>
+		<IR id="2" name="activation0" out_port_id="1"/>
 	</map>
 	<map>
 		<framework name="convolution0" out_port_id="0"/>
 		<IR id="1" name="convolution0" out_port_id="3"/>
 	</map>
 	<map>
-		<framework name="convolution1" out_port_id="0"/>
-		<IR id="4" name="convolution1" out_port_id="3"/>
+		<framework name="flatten0" out_port_id="0"/>
+		<IR id="7" name="flatten0" out_port_id="1"/>
+	</map>
+	<map>
+		<framework name="pooling0" out_port_id="0"/>
+		<IR id="3" name="pooling0" out_port_id="1"/>
+	</map>
+	<map>
+		<framework name="fullyconnected0" out_port_id="0"/>
+		<IR id="8" name="fullyconnected0" out_port_id="3"/>
 	</map>
 </mapping>

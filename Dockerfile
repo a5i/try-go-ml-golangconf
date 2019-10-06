@@ -93,10 +93,10 @@ RUN cd ${TMP_DIR}opencv/opencv-${OPENCV_VERSION} \
 	&& mkdir build \
 	&& cd build \
 	&& cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_INF_ENGINE=ON -D OPENCV_EXTRA_MODULES_PATH=${TMP_DIR}opencv/opencv_contrib-${OPENCV_VERSION}/modules -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=NO -D BUILD_opencv_python=NO -D BUILD_opencv_python2=NO -D BUILD_opencv_python3=NO -D WITH_JASPER=OFF -DOPENCV_GENERATE_PKGCONFIG=ON -DINF_ENGINE_LIB_DIRS=/opt/intel/openvino/inference_engine/lib/intel64 -DINF_ENGINE_INCLUDE_DIRS=/opt/intel/openvino/inference_engine/include .. \
-	&& make \
-	&& make preinstall
+	&& make -j$(nproc) \
+	&& make preinstall && make install && make clean
 
-RUN cd ${TMP_DIR}opencv/opencv-${OPENCV_VERSION}/build && make install
+# RUN cd ${TMP_DIR}opencv/opencv-${OPENCV_VERSION}/build && make install
 
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/opt/intel/openvino/deployment_tools/inference_engine/external/mkltiny_lnx/lib:/opt/intel/openvino/deployment_tools/inference_engine/lib/intel64
 
@@ -108,6 +108,11 @@ RUN pip3 install ipympl
 
 RUN go get -t -u -v github.com/sjwhitworth/golearn
 RUN cd $GOPATH/src/github.com/sjwhitworth/golearn && go get -t -u -v ./...
+
+#RUN go get -u github.com/golang/dep/cmd/dep
+
+#RUN go get -v -u -d gorgonia.org/gorgonia
+#RUN go get gopkg.in/cheggaaa/pb.v1
 
 # USER root
 
@@ -127,7 +132,7 @@ RUN cd $GOPATH/src/github.com/sjwhitworth/golearn && go get -t -u -v ./...
 #RUN cd $GOPATH/src/github.com/a5i/go-mxnet-predictor	&& sed -i "/prefix=/c prefix=\/usr\/local" travis/mxnet.pc && cp travis/mxnet.pc /usr/lib/pkgconfig/ && pkg-config --libs mxnet
 
 RUN chown -R ${NB_USER}:${NB_USER} $GOPATH
-ADD openvino-postinstall.sh /tmp/openvino-postinstall.sh
+
 #RUN bash /tmp/openvino-postinstall.sh
 RUN pip3 install networkx test-generator
 # RUN cd /opt/intel/openvino/deployment_tools/model_optimizer && pip3 install -r requirements_mxnet.txt
@@ -135,6 +140,7 @@ RUN pip3 install networkx test-generator
 USER ${NB_USER}
 RUN lgo installpkg gocv.io/x/gocv github.com/sjwhitworth/golearn
 RUN lgo installpkg github.com/sjwhitworth/golearn/base github.com/sjwhitworth/golearn/perceptron
+# RUN lgo installpkg gorgonia.org/gorgonia
 RUN cp -r $GOPATH/src/github.com/sjwhitworth/golearn/examples/datasets ${HOME}/datasets
 RUN cp -r $GOPATH/src/github.com/yunabe/lgo/examples ${HOME}/examples
 
