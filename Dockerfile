@@ -111,8 +111,8 @@ RUN cd $GOPATH/src/github.com/sjwhitworth/golearn && go get -t -u -v ./...
 
 #RUN go get -u github.com/golang/dep/cmd/dep
 
-#RUN go get -v -u -d gorgonia.org/gorgonia
-#RUN go get gopkg.in/cheggaaa/pb.v1
+RUN go get -v -u -d gorgonia.org/gorgonia
+RUN go get gopkg.in/cheggaaa/pb.v1
 
 # USER root
 
@@ -140,7 +140,7 @@ RUN pip3 install networkx test-generator
 USER ${NB_USER}
 RUN lgo installpkg gocv.io/x/gocv github.com/sjwhitworth/golearn
 RUN lgo installpkg github.com/sjwhitworth/golearn/base github.com/sjwhitworth/golearn/perceptron
-# RUN lgo installpkg gorgonia.org/gorgonia
+RUN lgo installpkg gorgonia.org/gorgonia
 RUN cp -r $GOPATH/src/github.com/sjwhitworth/golearn/examples/datasets ${HOME}/datasets
 RUN cp -r $GOPATH/src/github.com/yunabe/lgo/examples ${HOME}/examples
 
