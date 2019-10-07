@@ -47,3 +47,6 @@ http://127.0.0.1
 - GoNum https://github.com/gonum/gonum
 - MxNet https://mxnet.apache.org (Python)
 
+## Модели для OpenVINO + OpenCV
+
+https://github.com/opencv/open_model_zoo
