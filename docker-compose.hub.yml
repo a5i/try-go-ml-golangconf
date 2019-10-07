@@ -1,0 +1,10 @@
+version: '2.3'
+
+services:
+  project:
+    image: lexaficus/try-go-ml-golangconf
+    volumes:
+      - ./project:/home/gopher/project:rw
+      - ./data:/home/gopher/data:rw
+    ports:
+      - 80:8888
